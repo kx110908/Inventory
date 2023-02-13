@@ -457,8 +457,10 @@ include 'con.php'?>
                               <a href="#">
                                 <button class="btn btn-primary">Edit</button>
                               </a>
+                              <a href="#?Item_id=<?=$row[‘Item_id’]?>">
                                 <button class="btn btn-danger ml-2" data-toggle="modal" data-target="#deleteModal" >Delete
                                 </button>
+                                </a>
                             </td>
                             </tr>
                     </form>
