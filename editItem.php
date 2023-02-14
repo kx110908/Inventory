@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-include 'con.php'?>
+include 'con.php'
+
+$Item_id = $_GET['Item_id'];
+
+$sql = "SELECT * FROM supply WHERE Item_id = '$Item_id'";
+$result = mysqli_query($conn, $sql);
+
+?>
 
 <head>
 
@@ -381,7 +388,7 @@ include 'con.php'?>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
-                                </a>
+ </a>
                             </div>
                         </li>
 
@@ -391,176 +398,83 @@ include 'con.php'?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
+        <div class="container-fluid" id="container-wrapper">
+          <!-- Row -->
+          <div class="row  mb-3">
+            <!-- DataTable with Hover -->
+            <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h2 class="m-0 font-weight-bold text-success">Edit Item</h2>
+                  
+                </div>
+                <div>
+                  <form class="form-group" method="post" action="action.php" Enctype="multipart/form-data">
+                    <div class="row">
+                      <div class="col-6 pl-5 mt-4">
+                        <h6 class="text-left">Supply Category:</h6>
+                        <select name="SupplyCat" class="form-control" required >
+                          <option value="">*** Select Category ***</option>
+                          <option value="Office Equipment">Office Equipment</option>
+                          <option value="ICT Equipment">ICT Equipment</option>
+                          <option value="ICT Office Supply">ICT Office Supply</option>
+                          <option value="Other Supply">Other Supply</option>
 
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-                    <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-                        For more information about DataTables, please visit the <a target="_blank"
-                            href="https://datatables.net">official DataTables documentation</a>.</p>
-
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+                        </select><br>
+                      </div>
+                      <div class="col-6 pr-5 mt-4" id="trys">
+                        <h6 class="text-left">Supply Type:</h6>
+                        <select name="SupplyType" class="form-control" required >
+                          <option value="">*** Select Supply Type ***</option>
+                          <option value="Semi Expendable">Semi Expendable</option>
+                          <option value="Capital Outplay">Capital Outplay</option>
+                          
+                          
+                        </select><br>
+                      </div>
+                      <div class="col-6 pl-5 mt-">
+                        <h6 class="text-left">Item Name:</h6>
+                        <input type="text" name="Item_Name" class="form-control" required ><br>
+                        <h6 class="text-left">Brand Name:</h6>
+                        <input type="text" name="Brand_Name" class="form-control" required ><br>
+                        <h6 class="text-left">Unit:</h6>
+                        <input type="text" name="Item_Unit" class="form-control" required><br>
+                        <div class="row">
+                          <div class="col-6">
+                            <h6 class="text-left">Price:</h6>
+                            <input type="number" min="1" name="Item_Price" class="form-control" required >
+                          </div>
+                          <div class="col-6">
+                            <h6 class="text-left">Item Quantity:</h6>
+                            <input type="number" min="1" name="Item_Quantity" class="form-control" required ><br>
+                          </div>
                         </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>Item_ID</th>
-                                            <th>Items</th>
-                                            <th>Quantity</th>
-                                            <th>Unit</th>
-                                            <th>Quantity Used</th>
-                                            <th>Date of Delivery</th>
-                                            <th>Name of Supplier</th>
-                                            <th>Remaining Quantity</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Item_ID</th>
-                                            <th>Items</th>
-                                            <th>Quantity</th>
-                                            <th>Unit</th>
-                                            <th>Quantity Used</th>
-                                            <th>Date of Delivery</th>
-                                            <th>Name of Supplier</th>
-                                            <th>Remaining Quantity</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                       <?php  
-
-                        $sql = "SELECT * FROM supply";
-
-                        $result = mysqli_query($conn, $sql);
-
-                        if (mysqli_num_rows($result) > 0) {
-                          while ($row = mysqli_fetch_assoc($result)) {                    
-                            ?>
-            <!-- DENELETE SI FORM DAE NAMAN NEED KAPAG MADISPLAY -->
-                            <tr>
-                                <td><?=$row['Item_id']?></td>
-                                <td><?=$row['Item_Name']?></td>
-                                <td><?=$row['Item_Quantity']?></td>
-                                <td><?=$row['Item_Unit']?></td>
-                                <td><?=$row['Item_QuantityUsed']?></td>
-                                <td><?=$row['DeliveryDate']?></td>
-                                <td><?=$row['SupplierName']?></td>
-                                <td><?=$row['RemainingItem']?></td>
-                                <td align="center" class=" d-flex justify-content-center">
-                                    <button class="btn btn-primary " onclick="window.location.href='editItem.php?Item_id=<?php echo $row['Item_id']; ?>'">Edit</button>
-                                    <!-- Tinanggal na si <a> dae naman din need -->
-                                    <!-- dyan sa data-target sa button nilaganan ko id kang item para kapag kunwari si item na may id na 1 si tig click mo ang target nya na modal si may id din na 1  -->
-                                    <button class="btn btn-danger ml-2" data-toggle="modal" data-target="#deleteModal-<?=$row['Item_id']?>" >Delete
-                                    </button>
-                                </td>
-                            </tr>
-                            <!-- Delete Modal-->
-                            <!-- kaibahan na sa loop si id para kada loop may nakalaan na modal kada item -->
-                            <!-- Uni si modal na ang id may kaibahan din na item id para kapag nagclick sa button ang icacall na modal depende sa item id -->
-                            <div class="modal fade" id="deleteModal-<?=$row['Item_id']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                                aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Ready to Delete Item?</h5>
-                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">×</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body text-center"><?=$row['Item_Name']?> <br> Select "Delete" below if you are ready to remove this Item.</div>
-                                        <div class="modal-footer">
-                                            <form action="action.php" method="POST" type="hidden">
-                                            <input type="hidden" name="Item_id" value="<?=$row['Item_id']?>">
-                                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                            <button class="btn btn-danger"  name="deleteItem" type="submit" value="Submit" >Delete</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                          <?php       
-                                  } 
-                               } ?>
-
-                                    </tbody>
-                                </table>
-                            </div>
+                        <div>
+                             <h6 class="text-left">Serial:</h6>
+                        <input type="text" min="1" name="Item_Serial" class="form-control" required><br>
                         </div>
+                      </div>
+                      <div class="col-6 pr-5">
+                        <h6 class="text-left">Name of Supplier:</h6>
+                        <input type="text" min="1" name="SupplierName" class="form-control" required><br>
+                        <h6 class="text-left">Date Of Delivery:</h6>
+                        <input type="date" min="<?=$today?>" name="DeliveryDate" class="form-control" ><br>
+                        <h6 class="text-left">Product photo:</h6>
+                        <input type="file" name="photo" accept="image/*" class="form-control" ><br>
+                      </div>
                     </div>
-
-                </div>
-                <!-- /.container-fluid -->
-
-            </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
+                    <div class="row">
+                      <div class="col-12 pl-5 pr-5">
+                        <hr>
+                      </div>
+                      <div class="col-12 pl-5 pr-5 mb-3 d-flex justify-content-center">
+                        <button class="btn btn-primary" type="submit" value="Submit" name="editItem">Save</button>
+                        <button class="btn btn-secondary ml-2" type="button" onclick="window.location.href='tables.php'">Cancel</button>
+                      </div>
                     </div>
+                  </form>
                 </div>
-            </footer>
-            <!-- End of Footer -->
-
-        </div>
-        <!-- End of Content Wrapper -->
-
-    </div>
-    <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
-                </div>
+                
+              </div>
             </div>
-        </div>
-    </div>
-
-    
-
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
-
-</body>
-
-</html>
+          </div>
